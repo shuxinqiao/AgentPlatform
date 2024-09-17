@@ -1,0 +1,11 @@
+.db-container {
+    min-height: 0;
+}
+
+.updating {
+    display: inline;
+}
+
+.noupdating {
+    display: none;
+}

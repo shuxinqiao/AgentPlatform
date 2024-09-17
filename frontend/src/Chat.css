@@ -1,0 +1,113 @@
+.input-form {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    /* height: 50px; */
+    min-height: 50px;
+    max-height: 300px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+input[type="text"] {
+    width: 50%;
+    max-height: 300px;
+    resize: vertical;
+    overflow-y: auto;
+    padding: var(--input-padding);
+}
+
+.textarea-container {
+    width: 50%;
+    max-height: 300px;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+textarea {
+    width: 100%;
+    min-height: 50px;
+    max-height: 200px;
+    resize: none;
+    overflow-y: auto;
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: Arial, sans-serif;
+    padding: var(--input-padding);
+    box-sizing: border-box;
+}
+
+button {
+    padding: var(--button-padding); 
+}
+
+.chat-container {
+    overflow: hidden;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+    /* padding: 6rem 5rem 10rem; */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.messages-container {
+    overflow-y: auto;
+    max-height: calc(100vh - 3% - 100px);
+    min-height: calc(100vh - 3% - 100px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    top: 0;
+    bottom: 100px;
+    width: 100%;
+    padding: 0 5rem;
+    box-sizing: border-box;
+}
+
+.message {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    /* padding: 1rem; */
+    margin: 1rem;
+    border-radius: 0.5rem;
+    
+}
+
+#message-background {
+    overflow-x: auto;
+    border-radius: 10px;
+    background-color: rgb(50, 51, 51);
+}
+
+.sender {
+    margin-left: -1rem;
+}
+
+.message strong {
+    color: var(--text-color);
+}
+
+.message p {
+    margin: 0;
+    padding: 1rem;
+}
+
+pre {
+    margin-right: 3rem;
+    padding: 1rem;
+    border-radius: 10px;
+    overflow: scroll;
+    background-color: rgb(36, 35, 35);
+}

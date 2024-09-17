@@ -1,0 +1,89 @@
+:root {
+  --text-color: rgb(236, 236, 236);
+  --background-color: rgb(33, 33, 33);
+  --input-padding: 10px;
+  --button-padding: 10px 20px;
+}
+
+body {
+  margin: 0;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-font-smoothing: auto;
+}
+
+
+.main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.title {
+  height: 50px;
+  /* min-height: 50px; */
+  border-bottom: 2px solid #55b6ee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.title #logo {
+  flex: 0 0 auto;
+  text-align: center;
+  margin-left: 10px; 
+}
+
+.title #chattitle {
+  flex: 1;
+  text-align: center;
+}
+
+.title button {
+  flex: 0 0 auto;
+  margin-right: 10px; 
+  background-color: rgb(70, 73, 73);
+}
+
+.chat-window {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.chat {
+  flex: 1;
+  overflow: hidden;
+}
+
+.side-bar {
+  overflow-y: auto;
+  height: 100%;
+}
+
+
+.closed {
+  width: 0px;
+  opacity: 0;
+  transition: width 0.3s ease, opacity 0.3s ease;
+}
+
+.expanded {
+  width: 300px;
+  opacity: 1;
+  transition: width 0.3s ease, opacity 0.3s ease;
+  border-left: 2px solid #55b6ee;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 0px;
+}

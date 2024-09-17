@@ -1,0 +1,8 @@
+__pycache__/
+temp/
+
+*.h5
+*.db
+*.pkl
+*.pth
+*.env

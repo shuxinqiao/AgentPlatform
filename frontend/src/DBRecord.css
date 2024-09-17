@@ -1,0 +1,100 @@
+.rounded-box {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    height: 50px;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: white;
+    padding: 0;
+}
+
+.rounded-box:hover {
+    background-color: rgb(141, 231, 243);
+    transition: background-color 0.1s ease;
+}
+
+.icon-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+}
+
+.icon-box svg {
+    fill: #333;
+}
+
+.separator {
+    width: 2px;
+    height: 80%;
+    background-color: #ccc;
+}
+
+.text-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 80%;
+    max-height: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.text-box p {
+    font-size: 16px;
+    color: #333;
+}
+
+.record-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    opacity: 0;
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
+    overflow: hidden; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    transition: opacity 0.3s ease;
+}
+
+.open {
+    display: block;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */
+    overflow-y: auto;
+}
+
+.modal-content p {
+    color: #333;
+}
+
+/* The Close Button */
+.modal-close-area {
+    color: #e20c0c;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.modal-close-area:hover,
+.modal-close-area:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
