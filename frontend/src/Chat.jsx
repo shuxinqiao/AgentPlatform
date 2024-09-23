@@ -104,7 +104,7 @@ const StreamLangchain = ( {userID, handleDBUpdate} ) => {
     // Handler for input changes
     const handleInputChange = (e) => {
         const textarea = e.target;
-        const container = textarea.closest('.textarea-container');
+        const container = textarea.closest('.input-form');
         
         textarea.style.height = 'auto';
         const newHeight = Math.min(textarea.scrollHeight, 300);
@@ -120,6 +120,8 @@ const StreamLangchain = ( {userID, handleDBUpdate} ) => {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
             handleSubmit(event);
+        } else {
+            setFormheight()
         }
     }
 
@@ -132,13 +134,31 @@ const StreamLangchain = ( {userID, handleDBUpdate} ) => {
         setInput(''); // Clear input field
     };
 
+    const textarea_expand = () => {
+        setFormheight = s;
+    };
+
     return (
         <div className="chat-container">
             <div className="messages-container">
                 {responses.map((response, index) => renderMessage(response, index))}
                 <div ref={messagesEndRef} /> {/* Invisible element to help scroll into view */}
             </div>
-            <form onSubmit={handleSubmit} className="input-form" style={{ height: formheight }}>
+
+            <form className='input-form' onSubmit={handleSubmit}>
+                <textarea 
+                    style={{ height: formheight }}
+                    placeholder='Send a message' 
+                    // onKeyUp={textarea_expand} 
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
+                    value={input}
+                    rows={1}>    
+                </textarea>
+                <button className='send-button' type="submit">Send</button>
+            </form>
+            <div className='disclaimer'>Developed by GeoCloud group.</div>
+            {/* <form onSubmit={handleSubmit} className="input-form" style={{ height: formheight }}>
                 <div className="textarea-container">
                     <textarea
                         value={input}
@@ -149,7 +169,7 @@ const StreamLangchain = ( {userID, handleDBUpdate} ) => {
                     />
                 </div>
                 <button type="submit">Send</button>
-            </form>
+            </form> */}
         </div>
     );
 };
