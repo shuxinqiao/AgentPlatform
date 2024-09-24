@@ -18,7 +18,11 @@ export default defineConfig({
         rewriteWsOrigin: true,
       },
       "^/temp/.*": {
-        target: "ws://localhost:8000",
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
+      "^/upload/.*": {
+        target: "http://localhost:8000",
         changeOrigin: true,
       },
     },

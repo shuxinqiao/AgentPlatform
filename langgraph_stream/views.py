@@ -100,3 +100,31 @@ def serve_image(request, userID, filename):
             return HttpResponse(f.read(), content_type="image/png")
     else:
         return HttpResponse("Image not found", status=404)
+    
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from langgraph_stream.db_utils import *
+
+@csrf_exempt
+def file_upload(request, userID):
+    if request.method == 'POST' and 'file' in request.FILES:
+        file = request.FILES['file']
+        temp_dir = os.path.join(settings.BASE_DIR, 'temp', userID)  # Path to /temp/ directory
+        # Ensure the directory exists
+        os.makedirs(temp_dir, exist_ok=True)
+
+        # Save the file to /temp/ directory
+        file_path = os.path.join(temp_dir, file.name)
+        
+        with open(file_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+        description = f"User upload file {file.name} its location has been saved as data in this record."
+        store_data_sqlite3(filename="test.db", table=userID, data=f"{file_path}", type="userinput", description=description)
+
+        return JsonResponse({'message': 'File uploaded successfully!', 'file_path': file_path})
+    
+    return JsonResponse({'error': 'Invalid request'}, status=400)

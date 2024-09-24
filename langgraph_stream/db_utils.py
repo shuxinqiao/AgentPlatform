@@ -100,7 +100,10 @@ def get_data_sqlite3(filename=":memory:", table=None, id=None, type=None):
     if type != output[1]:
         raise TypeError(f"Tool function requests type={type} but {output[1]} is given.")
     else:
-        return CONVERTER_FUNCTINOS[f"{type}_out"](output[0])
+        if f"{type}_out" in CONVERTER_FUNCTINOS:
+            return CONVERTER_FUNCTINOS[f"{type}_out"](output[0])
+        else:
+            return output[0]
 
 
 #################################################

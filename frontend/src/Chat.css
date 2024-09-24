@@ -1,18 +1,30 @@
+.input-area {
+    padding: 18px 80px 0 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.upload-button {
+    flex: 1;
+}
+
 .input-form {
     position: relative;
     bottom: 0;
     left: 0;
     /* width: 100%; */
-    padding: 18px 80px 0 80px;
+    
     font-size: 1lem;
     
     /* height: 55px; */
     /* min-height: 60px; */
     max-height: 300px;
-    
-    display: flex;
+    flex: 5;
+    /* display: flex; */
     justify-content: center;
     align-items: center;
+    
     box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
 }
 
@@ -35,7 +47,7 @@ input[type="text"] {
 textarea {
     background: #40414f;
     border-radius: 15px;
-    width: 70%;
+    width: 80%;
     padding: 18px 15px;
     height: 60px;
     min-height: 50px;
@@ -124,6 +136,8 @@ button {
     overflow-x: auto;
     border-radius: 10px;
     background-color: rgb(50, 51, 51);
+    margin: 0;
+    padding: 0 1rem;
 }
 
 .sender {
@@ -134,10 +148,10 @@ button {
     color: var(--text-color);
 }
 
-.message p {
+/* .message p {
     margin: 0;
     padding: 1rem;
-}
+} */
 
 
 pre {

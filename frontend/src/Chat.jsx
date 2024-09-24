@@ -134,9 +134,48 @@ const StreamLangchain = ( {userID, handleDBUpdate} ) => {
         setInput(''); // Clear input field
     };
 
-    const textarea_expand = () => {
-        setFormheight = s;
+
+    const fileInputRef = useRef(null);
+
+    // Trigger the file input click
+    const handleUploadButtonClick = () => {
+        fileInputRef.current.click();
     };
+
+    // Handle file selection and upload
+    const handleUploadFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            console.log('File selected:', file);
+            // Perform the file upload (e.g., using fetch or axios)
+            // const formData = new FormData();
+            // formData.append('file', file);
+            // fetch('your-upload-endpoint', { method: 'POST', body: formData });
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch(`/upload/${userID}`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('File uploaded successfully:', data);
+
+                    const userMessage = { sender: "You", message: `Uploaded file ${file.name}.` };
+                    setResponses(prevResponses => [...prevResponses, userMessage]);
+                    ws.current.send(JSON.stringify({ message: `User uploaded file ${file.name}.` }));
+                } else {
+                    console.error('File upload failed:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error uploading file:', error);
+            }
+        }
+    };
+
 
     return (
         <div className="chat-container">
@@ -145,18 +184,32 @@ const StreamLangchain = ( {userID, handleDBUpdate} ) => {
                 <div ref={messagesEndRef} /> {/* Invisible element to help scroll into view */}
             </div>
 
-            <form className='input-form' onSubmit={handleSubmit}>
-                <textarea 
-                    style={{ height: formheight }}
-                    placeholder='Send a message' 
-                    // onKeyUp={textarea_expand} 
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyDown}
-                    value={input}
-                    rows={1}>    
-                </textarea>
-                <button className='send-button' type="submit">Send</button>
-            </form>
+            <div className='input-area'>
+                <div className='upload-button'>
+                    <button onClick={handleUploadButtonClick}>
+                        Upload File
+                    </button>
+                    {/* Hidden file input */}
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                        onChange={handleUploadFileChange}
+                    />
+                </div>
+                <form className='input-form' onSubmit={handleSubmit}>
+                    <textarea 
+                        style={{ height: formheight }}
+                        placeholder='Send a message' 
+                        // onKeyUp={textarea_expand} 
+                        onChange={handleInputChange}
+                        onKeyDown={handleKeyDown}
+                        value={input}
+                        rows={1}>    
+                    </textarea>
+                    <button className='send-button' type="submit">Send</button>
+                </form>
+            </div>
             <div className='disclaimer'>Developed by GeoCloud group.</div>
             {/* <form onSubmit={handleSubmit} className="input-form" style={{ height: formheight }}>
                 <div className="textarea-container">
