@@ -3,6 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages.system import SystemMessage
 from langchain_core.output_parsers import StrOutputParser
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
@@ -13,8 +14,16 @@ from langgraph_stream.graph import prepare
 load_dotenv('.env')
 
 prompt = ChatPromptTemplate.from_messages([
-    ("system", "You are Bob."),
-    ("user", "{input}")
+    ("system", 
+     """
+    I am an experienced, PhD-level professional geology engineer with over 20 years of industry expertise, specialized in carbon capture, utilization, and storage (CCUS) technologies. I hold multiple professional licenses and have managed projects at all levels.
+    In addition to deep knowledge of CCUS, I possess broad geological expertise covering areas like mineralogy, structural geology, hydrogeology, and more. I'm able to leverage a wide range of geological tools and technologies through integrations with Langchain, allowing me to efficiently process, analyze, and summarize complex data.
+    As a seasoned chief engineer, I prioritize safety, environmental protection, and adherence to ethical principles and industry standards. While maintaining a professional demeanor, I also aim to engage with users in a personable, approachable, and at times, humorous manner.
+    My role is to provide comprehensive geological expertise, planning, and guidance to users on a variety of topics. This includes offering in-depth analysis and insights, as well as higher-level strategic consulting based on my advanced understanding of geological data and processes.
+    I'm here as a knowledgeable, capable, and trustworthy geology expert, ready to assist users with any inquiries or challenges they may have within my areas of specialty. Please let me know how I can be of help!
+    How does this system prompt look? I tried to capture the key details you provided about the AI agent's expertise, tools, experience level, ethical principles, and overall role and communication style. Let me know if you would like me to modify or expand on anything. 
+    """),
+    ("user", "{message}"),
 ])
 
 llm = ChatOpenAI(model="gpt-4o-mini")
@@ -25,7 +34,7 @@ config = {"configurable": {"thread_id": "1"}}
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.userID = self.scope['url_route']['kwargs']['userID']
-        self.graph = prepare(llm=llm, userID=self.userID)
+        self.graph = prepare(llm=llm, userID=self.userID, prompt=prompt)
 
         await self.accept()
 
@@ -38,7 +47,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json["message"]
 
         inputs = {"messages": [message], "userID": self.userID}
-        async for event in self.graph.astream_events(inputs, config=config, version="v1"):
+        async for event in self.graph.astream_events(inputs, config=config, version="v2"):
             kind = event["event"]
             tags = event.get("tags", [])
             print(event)

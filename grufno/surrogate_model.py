@@ -134,11 +134,11 @@ class SurrogateModel:
 
         
         # Give Permeability and Porosity
-        if percentile in ["P20", "P40", "P60", "P80", "P30", "P50", "P25", "P75", "P5", "P10", "P15", "P65", "P95"]:
+        if isinstance(percentile, np.ndarray):
+            current_input = torch.tensor(percentile, dtype=torch.float32, device=self.device)
+        elif percentile in ["P20", "P40", "P60", "P80", "P30", "P50", "P25", "P75", "P5", "P10", "P15", "P65", "P95"]:
             current_input = self.preprocess(percentile)
-        else:
-            current_input = percentile
-
+            
         
         # Give injection locations and rate
         for i, loc in enumerate(location):

@@ -18,10 +18,11 @@ from langchain_experimental.utilities import PythonREPL
 from langgraph_stream.db_utils import *
 from langgraph_stream.tools.random_array_plot import random_array_plot
 from langgraph_stream.tools.output_file_tools import data_to_file
-from langgraph_stream.tools.GRUFNO_tools import GRUFNO_Prediction, plot_3d_image
+from langgraph_stream.tools.GRUFNO_tools import GRUFNO_Prediction_with_predefined_settings, GRUFNO_Prediction_with_direct_input, plot_3d_image
+from langgraph_stream.tools.CMG_data_parser import CMG_data_parser_to_co2_input
 
 
-def prepare(llm, userID):
+def prepare(llm, userID, prompt):
 
     # Init Database if not exists
     table_check(db_name="test.db", table_name=userID)
@@ -62,9 +63,9 @@ def prepare(llm, userID):
     ###############################
     # Register Tools here
     ###############################
-    define_tools = [GRUFNO_Prediction, plot_3d_image]
+    define_tools = [GRUFNO_Prediction_with_predefined_settings, GRUFNO_Prediction_with_direct_input, plot_3d_image, CMG_data_parser_to_co2_input]
 
-    llm_with_tools = llm.bind_tools(define_tools)
+    llm_with_tools = prompt | llm.bind_tools(define_tools)
 
     from langchain_core.messages import ToolMessage
 

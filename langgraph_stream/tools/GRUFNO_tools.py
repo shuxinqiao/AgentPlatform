@@ -8,7 +8,7 @@ import requests
 
 
 @tool
-def GRUFNO_Prediction(
+def GRUFNO_Prediction_with_predefined_settings(
     userID: Annotated[str, InjectedState("userID")],
     type: Annotated[str, "'sat' for saturation."],
     percentile: Annotated[str, f"must in list {["P20", "P40", "P60", "P80", "P30", "P50", "P25", "P75", "P5", "P10", "P15", "P65", "P95"]}."],
@@ -18,12 +18,47 @@ def GRUFNO_Prediction(
     boundary: Annotated[bool,"True means using leaky boundary condition, False means No leakage boundary condition."],
 ):
     """
-    CO2 Saturation or Pressure prediction with output size (Time=10, Z=24, X=60, Y=60)
+    CO2 Saturation or Pressure prediction with output size (Time=10, Z=24, X=60, Y=60).
+    This function should be used only if user specifically said they don't have any direct geology information as input.
     """
     API_url = "http://localhost:8000/model/grufno/sat/" + userID
 
     params = {
         'percentile': json.dumps(percentile),
+        'location': json.dumps(location),
+        'rate': json.dumps(rate),
+        'bhp': json.dumps(bhp),
+        'boundary': json.dumps(boundary)
+    }
+
+    response = requests.get(API_url, params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+        rowid = data.get('rowid')
+        return json.dumps(f"Prediction has been produced with rowid={rowid} in database.")
+    else:
+        return json.dumps(f"Model communication failed with status code {response.status_code}")
+
+
+@tool
+def GRUFNO_Prediction_with_direct_input(
+    userID: Annotated[str, InjectedState("userID")],
+    type: Annotated[str, "'sat' for saturation."],
+    rowid: Annotated[str, f"User uploaded data rowid in database, type of that record must be 'nparray'."],
+    location: Annotated[List[List[int]],"Inside List MUST be length=2, each value MUST in [0,60)."],
+    rate: Annotated[List[float],"MUST be same length as param::location, float value MUSt in [0,2]."],
+    bhp: Annotated[int,"Any value in [36000,75000]."],
+    boundary: Annotated[bool,"True means using leaky boundary condition, False means No leakage boundary condition."],
+):
+    """
+    CO2 Saturation or Pressure prediction with output size (Time=10, Z=24, X=60, Y=60).
+    This function should be used if user has their own direct geology data as input.
+    """
+    API_url = "http://localhost:8000/model/grufno/direct/sat/" + userID
+
+    params = {
+        'rowid': json.dumps(rowid),
         'location': json.dumps(location),
         'rate': json.dumps(rate),
         'bhp': json.dumps(bhp),
